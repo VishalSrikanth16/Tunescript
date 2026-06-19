@@ -1,9 +1,8 @@
 # TuneScript
 
-TuneScript is a guitar transcription workspace driven by the recovered PyTorch
-checkpoint in `models/guitar_transcription_final.pth`.
+TuneScript is a transcription workspace that Transcribes Music into Musical Notations.
 
-Microphone takes and uploaded files are decoded in the browser, encoded as WAV,
+Microphone can be used to record music in real time and uploaded files are decoded in the browser, encoded as .WAV,
 sent to the backend, converted there into `128 x 128` log-mel spectrogram
 chunks, passed through the PyTorch checkpoint, and then mapped to note events,
 suggested guitar positions, ASCII tabs, and TXT/JSON exports.
@@ -18,7 +17,7 @@ npm run dev
 
 Open the Vite URL, usually `http://localhost:5173`.
 
-## Start The AI Backend
+## Start The backend which is an AI model that does the conversion
 
 Use a second terminal:
 
@@ -44,7 +43,7 @@ npm run backend
 
 ## What Works
 
-- AI model inference for uploaded audio when the Python backend is running
+- AI model inference for uploaded audio.
 - AI model inference for short microphone takes
 - Live microphone recording with a real Web Audio visualizer
 - Note timing, frequency, confidence, and suggested fret positions
@@ -76,7 +75,7 @@ results directly instead of substituting a non-model transcription.
 The AI backend is required for transcription, but checkpoint quality is still
 limited by the recovered training labels. Treat model output as experimental.
 The app does not yet provide chord separation, polished polyphonic transcription,
-PDF, MusicXML, or MIDI generation.
+PDF, MusicXML, or MIDI generation. Still WIP.
 
 ## Quality Checks
 
@@ -85,3 +84,10 @@ npm run lint
 npm test
 npm run build
 ```
+
+## Model Details
+
+Model was fully trained by myself. 
+The model architecture is a custom CRNN style PyTorch network named `AlternativeCRNN`.
+It uses convolutional layers to learn patterns from spectrogram images, then maps those learned features into a piano roll style output. The output represents which notes are active across time frames. The model was trained using processed guitar audio data converted into spectrogram and piano-roll pairs. The spectrograms represent the sound of the guitar, while the piano roll labels tell the model which musical notes should be active at each moment.
+
